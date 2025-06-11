@@ -1,8 +1,368 @@
+/* Custom CSS for enhanced styling */
 body {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  min-width: 360px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  overflow-x: hidden;
+  background-attachment: fixed;
+}
+
+/* Ensure all containers maintain proper width */
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Enhanced animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Glassmorphism enhancement */
+.backdrop-blur-xl {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Custom scrollbar for dropdowns */
+.max-h-56::-webkit-scrollbar,
+.max-h-60::-webkit-scrollbar {
+  width: 8px;
+}
+
+.max-h-56::-webkit-scrollbar-track,
+.max-h-60::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.max-h-56::-webkit-scrollbar-thumb,
+.max-h-60::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.max-h-56::-webkit-scrollbar-thumb:hover,
+.max-h-60::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Prevent horizontal overflow in dropdowns */
+.dropdown-container {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.dropdown-list {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-width: 100%;
+}
+
+/* Remove number input arrows */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Currency item hover effects with glassmorphism */
+.currency-item {
+  transition: all 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 2px 8px;
+  padding: 12px 16px;
+}
+
+.currency-item:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  backdrop-filter: blur(8px);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+/* Ensure currency item content doesn't overflow */
+.currency-item .flex {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.currency-item .flex-1 {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.currency-item .font-medium,
+.currency-item .text-sm {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Glassmorphism effect for the main card */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Enhanced button states */
+#confirm-swap-btn:not(:disabled) {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4) !important;
+  color: white !important;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+}
+
+#confirm-swap-btn:not(:disabled):hover {
+  background: linear-gradient(135deg, #2563eb, #0891b2) !important;
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
+  transform: scale(1.02) translateY(-2px);
+}
+
+/* Responsive enhancements */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .bg-white\/10 {
+    padding: 24px 20px;
+  }
+  
+  .text-4xl.md\:text-5xl {
+    font-size: 2.25rem;
+  }
+  
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 1.25rem;
+  }
+  
+  input[type="number"], input[type="text"] {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .rounded-2xl {
+    border-radius: 1rem;
+  }
+  
+  .p-8 {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-4xl.md\:text-5xl {
+    font-size: 2rem;
+  }
+  
+  .bg-white\/10 {
+    padding: 20px 16px;
+  }
+  
+  .space-x-3 {
+    gap: 0.5rem;
+  }
+  
+  .px-5 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .py-4 {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem;
+  }
+}
+
+/* Landscape phone optimization */
+@media (max-width: 896px) and (max-height: 414px) and (orientation: landscape) {
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
+  .py-8 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .mb-8 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mt-8 {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Touch improvements */
+@media (hover: none) and (pointer: coarse) {
+  button, .currency-item {
+    min-height: 44px; /* iOS minimum touch target */
+  }
+  
+  .currency-item:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+  
+  input {
+    min-height: 44px;
+  }
+}
+
+/* High DPI screen improvements */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+  
+  .shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse,
+  .animate-spin,
+  .animate-fade-in,
+  .animate-slide-up,
+  .transition-all,
+  .transition-colors,
+  .transition-transform {
+    animation: none;
+    transition: none;
+  }
+  
+  .transform:hover {
+    transform: none;
+  }
+}
+
+/* Dark mode support for system preference */
+@media (prefers-color-scheme: dark) {
+  .dropdown-container {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: rgba(75, 85, 99, 0.3);
+  }
+  
+  .currency-item {
+    color: rgb(243, 244, 246);
+  }
+  
+  .currency-item:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* Animation delays for staggered effects */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out;
+}
+
+/* Floating animation for background elements */
+.animate-pulse {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom grid background */
+.bg-grid-white\/\[0\.02\] {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Enhanced focus states */
+input:focus, button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Loading spinner enhancement */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth height transitions for dropdowns */
+.dropdown-container {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Enhanced shadow effects */
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Better text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent text selection on buttons */
+button {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
 }

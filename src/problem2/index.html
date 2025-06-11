@@ -1,27 +1,331 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Swap - Professional Trading Interface</title>
 
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fancy Form</title>
+    <!-- You may add more stuff here -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="style.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#3b82f6",
+              "primary-dark": "#2563eb",
+              secondary: "#f8fafc",
+              accent: "#10b981",
+              danger: "#ef4444",
+            },
+            animation: {
+              "fade-in": "fadeIn 0.6s ease-out",
+              "slide-up": "slideUp 0.8s ease-out",
+              "spin-slow": "spin 2s linear infinite",
+              float: "float 6s ease-in-out infinite",
+              "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            },
+            backdropBlur: {
+              xs: "2px",
+            },
+            boxShadow: {
+              glass: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+              "glass-inset": "inset 0 2px 4px 0 rgba(255, 255, 255, 0.1)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-x-hidden"
+  >
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div
+        class="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"
+      ></div>
+      <div
+        class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"
+        style="animation-delay: 2s"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"
+        style="animation-delay: 4s"
+      ></div>
+    </div>
 
-  <!-- You may add more stuff here -->
-  <link href="style.css" rel="stylesheet" />
-</head>
+    <!-- Loading Overlay -->
+    <div
+      id="loading-overlay"
+      class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm z-50 hidden items-center justify-center"
+    >
+      <div
+        class="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-2xl flex items-center space-x-4 border border-white/20"
+      >
+        <div
+          class="animate-spin rounded-full h-8 w-8 border-4 border-primary border-t-transparent"
+        ></div>
+        <span class="text-gray-700 font-medium">Loading exchange rates...</span>
+      </div>
+    </div>
+    <!-- Main Container -->
+    <div
+      class="relative z-10 container mx-auto px-4 py-8 flex items-center justify-center min-h-screen"
+    >
+      <div class="w-full max-w-md">
+        <!-- Header -->
+        <div class="text-center mb-8 animate-fade-in">
+          <h1
+            class="text-4xl md:text-5xl font-bold text-white mb-3 bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent"
+          >
+            Currency Swap
+          </h1>
+          <p class="text-blue-200 text-lg">Exchange your tokens instantly</p>
+        </div>
+        <!-- Swap Form Card -->
+        <div
+          class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 animate-slide-up"
+        >
+          <form id="swap-form" class="space-y-6">
+            <!-- From Section -->
+            <div class="space-y-4">
+              <label
+                class="block text-sm font-semibold text-white uppercase tracking-wider"
+                >From</label
+              >
+              <div class="relative">
+                <div class="flex space-x-3">
+                  <!-- Currency Selector -->
+                  <div class="relative flex-1">
+                    <button
+                      type="button"
+                      id="from-currency-btn"
+                      class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-4 text-left focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 hover:bg-white/20 hover:border-white/30 group"
+                    >
+                      <div class="flex items-center space-x-3">
+                        <img
+                          id="from-currency-icon"
+                          src=""
+                          alt=""
+                          class="w-7 h-7 rounded-full hidden"
+                        />
+                        <span
+                          id="from-currency-text"
+                          class="text-white/70 group-hover:text-white transition-colors"
+                          >Select token</span
+                        >
+                        <svg
+                          class="w-5 h-5 ml-auto text-white/50 group-hover:text-white/80 transition-colors"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </div>
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                      id="from-currency-dropdown"
+                      class="dropdown-container absolute z-20 w-full mt-2 bg-white/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl hidden"
+                    >
+                      <div
+                        id="from-currency-list"
+                        class="dropdown-list py-3 max-h-56"
+                      ></div>
+                    </div>
+                  </div>
+                  <!-- Amount Input -->
+                  <div class="flex-1">
+                    <input
+                      type="number"
+                      id="from-amount"
+                      placeholder="0.00"
+                      class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-4 text-right text-xl font-semibold text-white placeholder-white/50 focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 hover:bg-white/20"
+                      step="any"
+                      min="0"
+                    />
+                  </div>
+                </div>
+                <!-- Balance Display -->
+                <div
+                  class="mt-3 text-sm text-white/60 text-right"
+                  id="from-balance"
+                ></div>
+                <!-- Error Message -->
+                <div
+                  class="mt-3 text-sm text-red-400 hidden"
+                  id="from-error"
+                ></div>
+              </div>
+            </div>
+            <!-- Swap Button -->
+            <div class="flex justify-center relative">
+              <button
+                type="button"
+                id="swap-currencies"
+                class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white p-4 rounded-full transition-all duration-300 transform hover:scale-110 focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50 shadow-lg hover:shadow-xl group"
+              >
+                <svg
+                  class="w-6 h-6 transition-transform duration-300 group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+            <!-- To Section -->
+            <div class="space-y-4">
+              <label
+                class="block text-sm font-semibold text-white uppercase tracking-wider"
+                >To</label
+              >
+              <div class="relative">
+                <div class="flex space-x-3">
+                  <!-- Currency Selector -->
+                  <div class="relative flex-1">
+                    <button
+                      type="button"
+                      id="to-currency-btn"
+                      class="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-4 text-left focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 hover:bg-white/20 hover:border-white/30 group"
+                    >
+                      <div class="flex items-center space-x-3">
+                        <img
+                          id="to-currency-icon"
+                          src=""
+                          alt=""
+                          class="w-7 h-7 rounded-full hidden"
+                        />
+                        <span
+                          id="to-currency-text"
+                          class="text-white/70 group-hover:text-white transition-colors"
+                          >Select token</span
+                        >
+                        <svg
+                          class="w-5 h-5 ml-auto text-white/50 group-hover:text-white/80 transition-colors"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7"
+                          ></path>
+                        </svg>
+                      </div>
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                      id="to-currency-dropdown"
+                      class="dropdown-container absolute z-20 w-full mt-2 bg-white/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl hidden"
+                    >
+                      <div
+                        id="to-currency-list"
+                        class="dropdown-list py-3 max-h-56"
+                      ></div>
+                    </div>
+                  </div>
+                  <!-- Amount Display -->
+                  <div class="flex-1">
+                    <input
+                      type="text"
+                      id="to-amount"
+                      placeholder="0.00"
+                      readonly
+                      class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-right text-xl font-semibold text-white/80 placeholder-white/30 cursor-not-allowed"
+                    />
+                  </div>
+                </div>
+                <!-- Exchange Rate Display -->
+                <div
+                  class="mt-3 text-sm text-white/60 text-right"
+                  id="exchange-rate"
+                ></div>
+              </div>
+            </div>
+            <!-- Confirm Button -->
+            <button
+              type="submit"
+              id="confirm-swap-btn"
+              disabled
+              class="w-full bg-gradient-to-r from-gray-600 to-gray-700 text-gray-300 py-5 rounded-2xl font-bold text-lg transition-all duration-300 disabled:cursor-not-allowed hover:shadow-lg transform hover:scale-[1.02] disabled:hover:scale-100"
+            >
+              <span id="confirm-btn-text">CONFIRM SWAP</span>
+              <div
+                id="confirm-btn-loading"
+                class="hidden flex items-center justify-center space-x-3"
+              >
+                <div
+                  class="animate-spin rounded-full h-6 w-6 border-3 border-white border-t-transparent"
+                ></div>
+                <span>Processing...</span>
+              </div>
+            </button>
+          </form>
+          <!-- Success Message -->
+          <div
+            id="success-message"
+            class="hidden mt-6 p-5 bg-green-500/20 backdrop-blur-sm border border-green-400/30 rounded-2xl animate-fade-in"
+          >
+            <div class="flex items-center space-x-3 text-green-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="font-semibold">Swap completed successfully!</span>
+            </div>
+          </div>
 
-<body>
+          <!-- Error Message -->
+          <div
+            id="error-message"
+            class="hidden mt-6 p-5 bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-2xl animate-fade-in"
+          >
+            <div class="flex items-center space-x-3 text-red-300">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fill-rule="evenodd"
+                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="font-semibold" id="error-text"
+                >Something went wrong. Please try again.</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Footer -->
+        <div class="text-center mt-8 text-white/60 text-sm">
+          <p class="flex items-center justify-center space-x-2">
+            <span
+              class="w-2 h-2 bg-green-400 rounded-full animate-pulse"
+            ></span>
+            <span>Exchange rates updated in real-time</span>
+          </p>
+        </div>
+      </div>
+    </div>
 
-  <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
-  <form onsubmit="return !1">
-    <h5>Swap</h5>
-    <label for="input-amount">Amount to send</label>
-    <input id="input-amount" />
-
-    <label for="output-amount">Amount to receive</label>
-    <input id="output-amount" />
-
-    <button>CONFIRM SWAP</button>
-  </form>
-  <script src="script.js"></script>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>
